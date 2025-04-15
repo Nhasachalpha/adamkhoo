@@ -26,11 +26,26 @@
             --light-bg: #f9f9f9;
         }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Montserrat', sans-serif; color: var(--text-color); background-color: #fff; position: relative; }
+        body { font-family: 'Montserrat', sans-serif; color: var(--text-color); background-color: #fff; position: relative; padding-top: 40px; /* Add padding to prevent content overlap with top bar */ }
+        /* ### ADDED: Top Bar Style ### */
+        .top-bar {
+            position: fixed; /* Fix bar at the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--text-color); /* Dark background */
+            color: white;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 1050; /* Ensure it's above other elements like fixed button */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
         .banner-gradient { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
         .book-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .book-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); }
-        .price-tag { position: absolute; top: -15px; right: -15px; background-color: var(--accent-color); color: white; padding: 8px 12px; border-radius: 50%; font-weight: bold; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); z-index: 10; transform: rotate(15deg); }
+        .price-tag { position: absolute; top: -15px; right: -15px; background-color: var(--accent-color); color: white; padding: 8px 12px; border-radius: 50%; font-weight: bold; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); z-index: 10; transform: rotate(15deg); font-size: 0.9rem; }
         .order-btn-fixed { position: fixed; bottom: 20px; right: 20px; z-index: 1000; animation: pulse 2s infinite; background-color: var(--primary-color); }
          @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); } }
         .notification { position: fixed; bottom: 80px; right: 20px; background-color: white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); border-radius: 8px; padding: 10px 15px; display: flex; align-items: center; z-index: 999; max-width: 300px; animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-out 4.5s forwards; }
@@ -59,6 +74,39 @@
         .tab-active { background-color: var(--primary-color); color: white; }
         .close { color: #aaa; font-size: 28px; font-weight: bold; position: absolute; top: 10px; right: 15px; }
         .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
+
+        #countdown-timer {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #countdown-timer span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 0 3px;
+            min-width: 45px;
+            display: inline-block;
+            text-align: center;
+        }
+        #countdown-timer .label {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #f0f0f0;
+            margin: 0 5px 0 1px;
+            text-transform: uppercase;
+        }
+        #countdown-ended {
+             font-size: 1.2rem;
+             font-weight: bold;
+             color: #f39c12;
+        }
     </style>
 
     <script>
@@ -83,6 +131,9 @@
     </head>
 <body class="bg-white">
 
+    <div class="top-bar">
+        Nhà Sách Alpha
+    </div>
     <button id="orderBtnFixed" class="order-btn-fixed btn-primary shadow-lg" onclick="scrollToOrderForm()">
         <i class="fas fa-shopping-cart mr-2"></i> Đặt Hàng Ngay
     </button>
@@ -105,13 +156,24 @@
             <p class="text-xl md:text-2xl mb-8">Công thức thành công từ chuyên gia hàng đầu Châu Á</p>
             <div class="flex justify-center items-center mb-8">
                  <div class="px-4 py-2 bg-white text-red-600 rounded-lg font-bold text-lg md:text-xl shadow-md">
-                     <span class="line-through text-gray-500">716.000đ</span> Chỉ còn <span class="text-red-600">349.000đ</span>
+                     <span class="line-through text-gray-500">515.000đ</span> Chỉ còn <span class="text-red-600">349.000đ</span>
                 </div>
             </div>
-             <p class="text-white text-lg mb-6">Tiết kiệm hơn <span class="font-bold text-yellow-300">50%</span> khi mua trọn bộ!</p>
-            <button class="btn-primary text-lg" onclick="scrollToOrderForm()"> <i class="fas fa-bolt mr-2"></i> Mua Ngay - Khai Phá Tiềm Năng
+             <p class="text-white text-lg mb-6">Tiết kiệm hơn <span class="font-bold text-yellow-300">32%</span> khi mua trọn bộ!</p>
+            <button class="btn-primary text-lg mb-6" onclick="scrollToOrderForm()"> <i class="fas fa-bolt mr-2"></i> Mua Ngay - Khai Phá Tiềm Năng
             </button>
-        </div>
+
+            <div id="countdown-timer" class="text-center">
+                 <p class="text-lg font-medium mb-2 text-yellow-300">🔥 Ưu đãi kết thúc sau 🔥</p>
+                 <div>
+                     <span id="countdown-days">00</span><span class="label">Ngày</span>
+                     <span id="countdown-hours">00</span><span class="label">Giờ</span>
+                     <span id="countdown-minutes">00</span><span class="label">Phút</span>
+                     <span id="countdown-seconds">00</span><span class="label">Giây</span>
+                 </div>
+                 <div id="countdown-ended" style="display: none;">Ưu đãi đã kết thúc!</div>
+            </div>
+            </div>
     </header>
 
     <section class="py-16 px-4 bg-gray-50">
@@ -131,9 +193,9 @@
 
             <div class="flex flex-col md:flex-row items-center mb-16 book-card p-6 bg-white rounded-lg shadow-md relative overflow-hidden">
                 <div class="md:w-1/3 mb-6 md:mb-0 relative">
-                    <span class="discount-badge">-17%</span>
+                    <span class="discount-badge">-21%</span>
                     <img src="https://salt.tikicdn.com/cache/750x750/media/catalog/product/t/o/toi-tai-gioi.jpg.webp" alt="Tôi Tài Giỏi, Bạn Cũng Thế!" class="rounded-lg shadow-lg mx-auto w-64" onerror="this.onerror=null; this.src='https://placehold.co/256x384/cccccc/ffffff?text=Tôi+Tài+Giỏi';">
-                    <div class="price-tag">149K</div>
+                    <div class="price-tag">99K</div>
                 </div>
                 <div class="md:w-2/3 md:pl-8">
                     <h3 class="text-2xl font-bold mb-4">Tôi Tài Giỏi, Bạn Cũng Thế!</h3>
@@ -149,8 +211,8 @@
                         <li>Vượt qua nỗi sợ thất bại.</li>
                     </ul>
                     <div class="flex items-center">
-                        <span class="mr-4 text-gray-700"><span class="line-through">179.000đ</span></span>
-                        <span class="text-xl font-bold text-red-600 mr-6">149.000đ</span>
+                        <span class="mr-4 text-gray-700"><span class="line-through">125.000đ</span></span>
+                        <span class="text-xl font-bold text-red-600 mr-6">99.000đ</span>
                         <button class="btn-primary" onclick="selectBookAndScroll('book1')">Mua Ngay</button>
                     </div>
                 </div>
@@ -158,9 +220,8 @@
 
             <div class="flex flex-col md:flex-row items-center mb-16 book-card p-6 bg-white rounded-lg shadow-md relative overflow-hidden">
                 <div class="md:w-1/3 mb-6 md:mb-0 relative">
-                    <span class="discount-badge">-17%</span>
-                    <img src="https://static.hotdeal.vn/images/1360/1360102/500x500xb/293130-lam-chu-tu-duy-thay-doi-van-menh-tai-ban-03-2013.jpg" alt="Làm Chủ Tư Duy, Thay Đổi Vận Mệnh" class="rounded-lg shadow-lg mx-auto w-64" onerror="this.onerror=null; this.src='https://placehold.co/256x384/cccccc/ffffff?text=Làm+Chủ+Tư+Duy';">
-                    <div class="price-tag">149K</div>
+                    <span class="discount-badge">-17%</span> <img src="https://static.hotdeal.vn/images/1360/1360102/500x500xb/293130-lam-chu-tu-duy-thay-doi-van-menh-tai-ban-03-2013.jpg" alt="Làm Chủ Tư Duy, Thay Đổi Vận Mệnh" class="rounded-lg shadow-lg mx-auto w-64" onerror="this.onerror=null; this.src='https://placehold.co/256x384/cccccc/ffffff?text=Làm+Chủ+Tư+Duy';">
+                    <div class="price-tag">129K</div>
                 </div>
                 <div class="md:w-2/3 md:pl-8">
                     <h3 class="text-2xl font-bold mb-4">Làm Chủ Tư Duy, Thay Đổi Vận Mệnh</h3>
@@ -176,8 +237,8 @@
                         <li>Thiết kế cuộc đời bạn mong muốn.</li>
                     </ul>
                     <div class="flex items-center">
-                        <span class="mr-4 text-gray-700"><span class="line-through">179.000đ</span></span>
-                        <span class="text-xl font-bold text-red-600 mr-6">149.000đ</span>
+                        <span class="mr-4 text-gray-700"><span class="line-through">155.000đ</span></span>
+                        <span class="text-xl font-bold text-red-600 mr-6">129.000đ</span>
                         <button class="btn-primary" onclick="selectBookAndScroll('book2')">Mua Ngay</button>
                     </div>
                 </div>
@@ -185,9 +246,8 @@
 
              <div class="flex flex-col md:flex-row items-center mb-16 book-card p-6 bg-white rounded-lg shadow-md relative overflow-hidden">
                 <div class="md:w-1/3 mb-6 md:mb-0 relative">
-                    <span class="discount-badge">-17%</span>
-                    <img src="https://dotary.vn/wp-content/uploads/2023/10/review-sach-bi-quyet-tay-trang-thanh-trieu-phu-adam-khoo-1708-1.jpg" alt="Bí Quyết Tay Trắng Thành Triệu Phú" class="rounded-lg shadow-lg mx-auto w-64" onerror="this.onerror=null; this.src='https://placehold.co/256x384/cccccc/ffffff?text=Bí+Quyết+Tay+Trắng';">
-                    <div class="price-tag">149K</div>
+                     <span class="discount-badge">-21%</span> <img src="https://dotary.vn/wp-content/uploads/2023/10/review-sach-bi-quyet-tay-trang-thanh-trieu-phu-adam-khoo-1708-1.jpg" alt="Bí Quyết Tay Trắng Thành Triệu Phú" class="rounded-lg shadow-lg mx-auto w-64" onerror="this.onerror=null; this.src='https://placehold.co/256x384/cccccc/ffffff?text=Bí+Quyết+Tay+Trắng';">
+                    <div class="price-tag">99K</div>
                 </div>
                 <div class="md:w-2/3 md:pl-8">
                     <h3 class="text-2xl font-bold mb-4">Bí Quyết Tay Trắng Thành Triệu Phú</h3>
@@ -203,8 +263,8 @@
                         <li>Xây dựng nhiều nguồn thu nhập.</li>
                     </ul>
                     <div class="flex items-center">
-                        <span class="mr-4 text-gray-700"><span class="line-through">179.000đ</span></span>
-                        <span class="text-xl font-bold text-red-600 mr-6">149.000đ</span>
+                        <span class="mr-4 text-gray-700"><span class="line-through">125.000đ</span></span>
+                        <span class="text-xl font-bold text-red-600 mr-6">99.000đ</span>
                         <button class="btn-primary" onclick="selectBookAndScroll('book3')">Mua Ngay</button>
                     </div>
                 </div>
@@ -212,9 +272,8 @@
 
              <div class="flex flex-col md:flex-row items-center mb-16 book-card p-6 bg-white rounded-lg shadow-md relative overflow-hidden">
                 <div class="md:w-1/3 mb-6 md:mb-0 relative">
-                    <span class="discount-badge">-17%</span>
-                    <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwp1xktkkpr8b" alt="Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ" class="rounded-lg shadow-lg mx-auto w-64" onerror="this.onerror=null; this.src='https://placehold.co/256x384/cccccc/ffffff?text=Bí+Quyết+Gây+Dựng';">
-                    <div class="price-tag">149K</div>
+                    <span class="discount-badge">-19%</span> <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwp1xktkkpr8b" alt="Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ" class="rounded-lg shadow-lg mx-auto w-64" onerror="this.onerror=null; this.src='https://placehold.co/256x384/cccccc/ffffff?text=Bí+Quyết+Gây+Dựng';">
+                    <div class="price-tag">89K</div>
                 </div>
                 <div class="md:w-2/3 md:pl-8">
                     <h3 class="text-2xl font-bold mb-4">Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ</h3>
@@ -230,8 +289,8 @@
                         <li>Vượt qua khó khăn và phát triển bền vững.</li>
                     </ul>
                     <div class="flex items-center">
-                        <span class="mr-4 text-gray-700"><span class="line-through">179.000đ</span></span>
-                        <span class="text-xl font-bold text-red-600 mr-6">149.000đ</span>
+                        <span class="mr-4 text-gray-700"><span class="line-through">110.000đ</span></span>
+                        <span class="text-xl font-bold text-red-600 mr-6">89.000đ</span>
                         <button class="btn-primary" onclick="selectBookAndScroll('book4')">Mua Ngay</button>
                     </div>
                 </div>
@@ -239,7 +298,7 @@
 
             <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl p-8 text-white text-center shadow-xl mt-12">
                 <h3 class="text-3xl font-bold mb-4">Combo Khuyến Mãi Đặc Biệt!</h3>
-                <p class="text-xl mb-6">Mua trọn bộ 4 cuốn sách với giá chỉ <span class="font-bold text-2xl">349.000đ</span> (tiết kiệm hơn 50%)</p>
+                <p class="text-xl mb-6">Mua trọn bộ 4 cuốn sách với giá chỉ <span class="font-bold text-2xl">349.000đ</span> (tiết kiệm hơn 32%)</p>
                 <div class="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-8">
                     <img src="https://salt.tikicdn.com/cache/750x750/media/catalog/product/t/o/toi-tai-gioi.jpg.webp" alt="Tôi Tài Giỏi, Bạn Cũng Thế!" class="w-24 md:w-32 h-auto rounded-md shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/128x192/cccccc/ffffff?text=Sách+1';">
                     <img src="https://static.hotdeal.vn/images/1360/1360102/500x500xb/293130-lam-chu-tu-duy-thay-doi-van-menh-tai-ban-03-2013.jpg" alt="Làm Chủ Tư Duy, Thay Đổi Vận Mệnh" class="w-24 md:w-32 h-auto rounded-md shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/128x192/cccccc/ffffff?text=Sách+2';">
@@ -247,9 +306,9 @@
                     <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lmwp1xktkkpr8b" alt="Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ" class="w-24 md:w-32 h-auto rounded-md shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/128x192/cccccc/ffffff?text=Sách+4';">
                 </div>
                  <div class="text-center mb-6">
-                    <p class="text-xl font-bold">Giá gốc: <span class="line-through">716.000đ</span></p>
+                    <p class="text-xl font-bold">Giá gốc: <span class="line-through">515.000đ</span></p>
                     <p class="text-3xl font-bold text-yellow-200">Giá combo: 349.000đ</p>
-                    <p class="text-lg mt-2">Tiết kiệm: 367.000đ (Hơn 50%)</p>
+                    <p class="text-lg mt-2">Tiết kiệm: 166.000đ (Hơn 32%)</p>
                 </div>
                 <button class="btn-primary text-lg bg-white text-orange-500 hover:bg-gray-100" onclick="scrollToOrderForm()"> <i class="fas fa-shopping-cart mr-2"></i> Đặt Mua Combo Ngay </button>
             </div>
@@ -262,7 +321,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="testimonial-card">
                     <div class="flex items-center mb-4">
-                        <img src="https://placehold.co/48x48/cccccc/ffffff?text=A" alt="Nguyễn Văn An" class="w-12 h-12 rounded-full mr-4 object-cover" onerror="this.onerror=null; this.src='https://placehold.co/48x48/cccccc/ffffff?text=A';">
+                        <img src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/04/anh-trai-dep-Viet-Nam-70.jpg" alt="Nguyễn Văn An" class="w-12 h-12 rounded-full mr-4 object-cover" onerror="this.onerror=null; this.src='https://placehold.co/48x48/cccccc/ffffff?text=A';">
                         <div>
                             <h4 class="font-semibold">Nguyễn Văn An</h4>
                             <p class="text-sm text-gray-600">Sinh viên</p>
@@ -278,7 +337,7 @@
                          onerror="this.style.display='none'"> </div>
                 <div class="testimonial-card">
                     <div class="flex items-center mb-4">
-                        <img src="https://placehold.co/48x48/cccccc/ffffff?text=B" alt="Trần Thị Bích" class="w-12 h-12 rounded-full mr-4 object-cover" onerror="this.onerror=null; this.src='https://placehold.co/48x48/cccccc/ffffff?text=B';">
+                         <img src="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2020/11/20/856165/Img2904-159927756318.jpg" alt="Trần Thị Bích" class="w-12 h-12 rounded-full mr-4 object-cover" onerror="this.onerror=null; this.src='https://placehold.co/48x48/cccccc/ffffff?text=B';">
                         <div>
                             <h4 class="font-semibold">Trần Thị Bích</h4>
                             <p class="text-sm text-gray-600">Nhân viên văn phòng</p>
@@ -294,7 +353,7 @@
                          onerror="this.style.display='none'"> </div>
                 <div class="testimonial-card">
                     <div class="flex items-center mb-4">
-                        <img src="https://placehold.co/48x48/cccccc/ffffff?text=C" alt="Lê Minh Cường" class="w-12 h-12 rounded-full mr-4 object-cover" onerror="this.onerror=null; this.src='https://placehold.co/48x48/cccccc/ffffff?text=C';">
+                         <img src="https://channel.mediacdn.vn/prupload/164/2017/08/img20170801185010820.jpg" alt="Lê Minh Cường" class="w-12 h-12 rounded-full mr-4 object-cover" onerror="this.onerror=null; this.src='https://placehold.co/48x48/cccccc/ffffff?text=C';">
                         <div>
                             <h4 class="font-semibold">Lê Minh Cường</h4>
                             <p class="text-sm text-gray-600">Chủ doanh nghiệp nhỏ</p>
@@ -321,39 +380,44 @@
                         <div class="md:col-span-2">
                             <h3 class="text-xl font-semibold mb-4">Chọn Sản Phẩm</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                                <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200 lg:col-span-1"> <input type="radio" id="combo" name="product" value="Combo 4 cuốn sách Adam Khoo - 349.000đ" data-price="349000" data-id="combo_adam_khoo" data-name="Combo 4 cuốn sách Adam Khoo" data-numitems="4" class="mr-3 mt-1 flex-shrink-0" checked>
+                                <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200 lg:col-span-1">
+                                    <input type="radio" id="combo" name="product" value="Combo 4 cuốn sách Adam Khoo - 349.000đ" data-price="349000" data-id="combo_adam_khoo" data-name="Combo 4 cuốn sách Adam Khoo" data-numitems="4" class="mr-3 mt-1 flex-shrink-0" checked>
                                     <label for="combo" class="cursor-pointer flex-grow">
                                         <span class="font-medium block">Combo 4 cuốn Adam Khoo</span>
                                         <p class="text-red-600 font-bold">349.000đ</p>
-                                        <p class="text-sm text-gray-500"><span class="line-through">716.000đ</span> (Tiết kiệm 51%)</p>
+                                        <p class="text-sm text-gray-500"><span class="line-through">515.000đ</span> (Tiết kiệm 32%)</p>
                                     </label>
                                 </div>
-                                <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200"> <input type="radio" id="book1" name="product" value="Tôi Tài Giỏi, Bạn Cũng Thế! - 149.000đ" data-price="149000" data-id="toi_tai_gioi" data-name="Tôi Tài Giỏi, Bạn Cũng Thế!" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
+                                <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200">
+                                    <input type="radio" id="book1" name="product" value="Tôi Tài Giỏi, Bạn Cũng Thế! - 99.000đ" data-price="99000" data-id="toi_tai_gioi" data-name="Tôi Tài Giỏi, Bạn Cũng Thế!" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
                                     <label for="book1" class="cursor-pointer flex-grow">
                                         <span class="font-medium block">Tôi Tài Giỏi...</span>
-                                        <p class="text-red-600 font-bold">149.000đ</p>
-                                        <p class="text-sm text-gray-500"><span class="line-through">179.000đ</span></p>
+                                        <p class="text-red-600 font-bold">99.000đ</p>
+                                        <p class="text-sm text-gray-500"><span class="line-through">125.000đ</span></p>
                                     </label>
                                 </div>
-                                <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200"> <input type="radio" id="book2" name="product" value="Làm Chủ Tư Duy, Thay Đổi Vận Mệnh - 149.000đ" data-price="149000" data-id="lam_chu_tu_duy" data-name="Làm Chủ Tư Duy, Thay Đổi Vận Mệnh" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
+                                <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200">
+                                    <input type="radio" id="book2" name="product" value="Làm Chủ Tư Duy, Thay Đổi Vận Mệnh - 129.000đ" data-price="129000" data-id="lam_chu_tu_duy" data-name="Làm Chủ Tư Duy, Thay Đổi Vận Mệnh" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
                                     <label for="book2" class="cursor-pointer flex-grow">
                                         <span class="font-medium block">Làm Chủ Tư Duy...</span>
-                                        <p class="text-red-600 font-bold">149.000đ</p>
-                                        <p class="text-sm text-gray-500"><span class="line-through">179.000đ</span></p>
+                                        <p class="text-red-600 font-bold">129.000đ</p>
+                                        <p class="text-sm text-gray-500"><span class="line-through">155.000đ</span></p>
                                     </label>
                                 </div>
-                                 <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200"> <input type="radio" id="book3" name="product" value="Bí Quyết Tay Trắng Thành Triệu Phú - 149.000đ" data-price="149000" data-id="bi_quyet_tay_trang" data-name="Bí Quyết Tay Trắng Thành Triệu Phú" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
+                                 <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200">
+                                    <input type="radio" id="book3" name="product" value="Bí Quyết Tay Trắng Thành Triệu Phú - 99.000đ" data-price="99000" data-id="bi_quyet_tay_trang" data-name="Bí Quyết Tay Trắng Thành Triệu Phú" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
                                     <label for="book3" class="cursor-pointer flex-grow">
                                         <span class="font-medium block">Bí Quyết Tay Trắng...</span>
-                                        <p class="text-red-600 font-bold">149.000đ</p>
-                                        <p class="text-sm text-gray-500"><span class="line-through">179.000đ</span></p>
+                                        <p class="text-red-600 font-bold">99.000đ</p>
+                                        <p class="text-sm text-gray-500"><span class="line-through">125.000đ</span></p>
                                     </label>
                                 </div>
-                                 <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200"> <input type="radio" id="book4" name="product" value="Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ - 149.000đ" data-price="149000" data-id="bi_quyet_gay_dung" data-name="Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
+                                 <div class="bg-white p-4 rounded border border-gray-200 flex items-start cursor-pointer hover:border-red-500 transition duration-200">
+                                    <input type="radio" id="book4" name="product" value="Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ - 89.000đ" data-price="89000" data-id="bi_quyet_gay_dung" data-name="Bí Quyết Gây Dựng Cơ Nghiệp Bạc Tỷ" data-numitems="1" class="mr-3 mt-1 flex-shrink-0">
                                     <label for="book4" class="cursor-pointer flex-grow">
                                         <span class="font-medium block">Bí Quyết Gây Dựng...</span>
-                                        <p class="text-red-600 font-bold">149.000đ</p>
-                                        <p class="text-sm text-gray-500"><span class="line-through">179.000đ</span></p>
+                                        <p class="text-red-600 font-bold">89.000đ</p>
+                                        <p class="text-sm text-gray-500"><span class="line-through">110.000đ</span></p>
                                     </label>
                                 </div>
                             </div>
@@ -430,11 +494,19 @@
         const notificationAvatar = document.getElementById('notificationAvatar');
         const notificationText = document.getElementById('notificationText');
         const orderFormSection = document.getElementById('orderForm');
+        const countdownContainer = document.getElementById('countdown-timer');
+        const daysEl = document.getElementById('countdown-days');
+        const hoursEl = document.getElementById('countdown-hours');
+        const minutesEl = document.getElementById('countdown-minutes');
+        const secondsEl = document.getElementById('countdown-seconds');
+        const countdownEndedEl = document.getElementById('countdown-ended');
+        let countdownInterval;
 
         document.addEventListener('DOMContentLoaded', function() {
             fetchProvinces();
             setupEventListeners();
             displayRandomNotifications();
+            startCountdown();
         });
 
         function setupEventListeners() {
@@ -489,17 +561,15 @@
             if (bookRadio) {
                 bookRadio.checked = true;
                 try {
-                    const price = parseFloat(bookRadio.dataset.price) || 0;
-                    const name = bookRadio.dataset.name || `Sách ${bookId}`;
-                    const id = bookRadio.dataset.id || bookId;
+                    const productDetails = getSelectedProductDetails();
                     fbq('track', 'AddToCart', {
-                        content_name: name,
-                        content_ids: [id],
+                        content_name: productDetails.content_name,
+                        content_ids: productDetails.content_ids,
                         content_type: 'product',
-                        value: price,
-                        currency: 'VND'
+                        value: productDetails.value,
+                        currency: productDetails.currency
                     });
-                    console.log(`Meta Pixel: AddToCart event fired for ${id}`);
+                    console.log(`Meta Pixel: AddToCart event fired for ${productDetails.content_ids[0]}`);
                 } catch (e) {
                     console.error(`Error firing AddToCart event for ${bookId}: `, e);
                 }
@@ -675,6 +745,69 @@
                     setTimeout(() => alertBox.remove(), 300);
                  }
             }, 5000);
+        }
+
+        function startCountdown() {
+            const targetDate = new Date().getTime() + 3 * 24 * 60 * 60 * 1000;
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if (daysEl && hoursEl && minutesEl && secondsEl) {
+                    daysEl.textContent = String(days).padStart(2, '0');
+                    hoursEl.textContent = String(hours).padStart(2, '0');
+                    minutesEl.textContent = String(minutes).padStart(2, '0');
+                    secondsEl.textContent = String(seconds).padStart(2, '0');
+                }
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    if (countdownContainer && countdownEndedEl) {
+                        countdownContainer.querySelector('div:nth-child(2)').style.display = 'none';
+                         countdownContainer.querySelector('p').style.display = 'none';
+                        countdownEndedEl.style.display = 'block';
+                    }
+                } else {
+                     if (countdownContainer && countdownEndedEl) {
+                        countdownContainer.querySelector('div:nth-child(2)').style.display = 'block';
+                        countdownContainer.querySelector('p').style.display = 'block';
+                        countdownEndedEl.style.display = 'none';
+                    }
+                }
+            }, 1000);
+             updateCountdownDisplay(targetDate);
+        }
+
+        function updateCountdownDisplay(targetDate) {
+             const now = new Date().getTime();
+             const distance = targetDate - now;
+             if (distance > 0) {
+                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                 if (daysEl && hoursEl && minutesEl && secondsEl) {
+                     daysEl.textContent = String(days).padStart(2, '0');
+                     hoursEl.textContent = String(hours).padStart(2, '0');
+                     minutesEl.textContent = String(minutes).padStart(2, '0');
+                     secondsEl.textContent = String(seconds).padStart(2, '0');
+                 }
+                 if (countdownContainer && countdownEndedEl) {
+                     countdownContainer.querySelector('div:nth-child(2)').style.display = 'block';
+                     countdownContainer.querySelector('p').style.display = 'block';
+                     countdownEndedEl.style.display = 'none';
+                 }
+             } else {
+                 if (countdownContainer && countdownEndedEl) {
+                     countdownContainer.querySelector('div:nth-child(2)').style.display = 'none';
+                     countdownContainer.querySelector('p').style.display = 'none';
+                     countdownEndedEl.style.display = 'block';
+                 }
+             }
         }
 
     </script>
